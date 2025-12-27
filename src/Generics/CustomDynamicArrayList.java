@@ -62,32 +62,32 @@ public class CustomDynamicArrayList<T> {
         return (T)data[size-1];
     }
 
-    public void add(T element){
+    public void add(T object){
         if (isFull()){
             grow();
         }
-        data[size++] = element;
+        data[size++] = object;
     }
 
-    public void add(int index,T element)throws ArrayListException{
+    public void add(int index,T object)throws ArrayListException{
         if (index < 0 || index > size){
             throw new ArrayListException("Invalid Index!");
         }
 
         if (isFull()) grow();
         if (index == 0){
-            addFirst(element);
+            addFirst(object);
             return;
         }
         if (index == size){
-            addLast(element);
+            addLast(object);
             return;
         }
 
         for (int i = size-1; i >= index; i--){
             data[i+1] = data[i];
         }
-        data[index] = element;
+        data[index] = object;
         size++;
     }
 
@@ -98,7 +98,7 @@ public class CustomDynamicArrayList<T> {
         }
     }
 
-    public void addFirst(T element){
+    public void addFirst(T object){
         if (isFull()){
             grow();
         }
@@ -106,15 +106,15 @@ public class CustomDynamicArrayList<T> {
         for (int i = size - 1; i >= 0; i--){
             data[i+1] = data[i];
         }
-        data[0] = element;
+        data[0] = object;
         size++;
     }
 
-    public void addLast(T element){
+    public void addLast(T object){
         if (isFull()){
             grow();
         }
-        data[size++] = element;
+        data[size++] = object;
     }
 
     public void removeLast(){
@@ -170,13 +170,27 @@ public class CustomDynamicArrayList<T> {
         data = temp;
     }
 
-    public boolean contains(T element){
+    public boolean contains(T object){
         for (int i = 0; i < size; i++){
-            if (data[i].equals(element)){
+            if(object == null && data[i] == null){
+                return true;
+            }
+            if (data[i] != null && data[i].equals(object)){
                 return true;
             }
         }
         return false;
+    }
+
+    @SafeVarargs
+    public final boolean containsAll(T... objects){
+        boolean result = false;
+        for (T object : objects){
+            if (!contains(object)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void clear(){
@@ -188,28 +202,28 @@ public class CustomDynamicArrayList<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public T set(T element,int index)throws ArrayListException{
+    public T set(T object,int index)throws ArrayListException{
         if (index < 0 || index >= size) {
             throw new ArrayListException("Invalid Index: index out of bound " + index + " for size " + size);
         }
 
         Object previousValue = data[index];
-        data[index] = element;
+        data[index] = object;
         return (T)previousValue;
     }
 
-    public void removeByValue(T element) throws ArrayListException {
+    public void removeByValue(T object) throws ArrayListException {
         for (int i = 0; i < size; i++){
-            if (data[i].equals(element)){
+            if (data[i].equals(object)){
                 removeByIndex(i);
                 return;
             }
         }
     }
 
-    public void removeAllOccurrences(T element) throws ArrayListException {
+    public void removeAllOccurrences(T object) throws ArrayListException {
         for (int i = 0; i < size;){
-            if (data[i].equals(element)){
+            if (data[i].equals(object)){
                 removeByIndex(i);
             }else{
                 i++;
@@ -217,18 +231,27 @@ public class CustomDynamicArrayList<T> {
         }
     }
 
-    public int indexOf(T element){
+    public void removeRange(int fromIndex, int toIndex) throws ArrayListException {
+        int count = (toIndex - fromIndex) + 1;
+
+        while(count != 0){
+            removeByIndex(fromIndex);
+            count--;
+        }
+    }
+
+    public int indexOf(T object){
         for (int i = 0; i < size; i++){
-            if (data[i].equals(element)){
+            if (data[i].equals(object)){
                 return i;
             }
         }
         return -1;
     }
 
-    public int lastIndexOf(T element){
+    public int lastIndexOf(T object){
         for (int i = size-1; i >= 0; i--){
-            if (data[i].equals(element)){
+            if (data[i].equals(object)){
                 return i;
             }
         }
