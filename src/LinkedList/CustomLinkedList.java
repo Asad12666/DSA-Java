@@ -82,12 +82,28 @@ public class CustomLinkedList<T> {
         size++;
     }
 
+    public void insertRecursively(int index, T data,Node temp){
+        if (index < 0 || index > size){
+            throw new IndexOutOfBoundsException();
+        }
+
+        if(index == 0){
+
+            return;
+        }
+
+        insertRecursively(index-1,data,temp.next);
+    }
+
     public int size(){
         return this.size;
     }
 
     public boolean isEmpty(){
         return size == 0;
+    }
+    public Node getHead(){
+        return head;
     }
 
     public T getFirst(){

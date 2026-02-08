@@ -26,5 +26,6 @@ public class TestClass {
         list.clear();
         System.out.println(list);
         System.out.println("Size: "+ list.size());
+        list.insertRecursively(2,56,list.getHead());
     }
 }
